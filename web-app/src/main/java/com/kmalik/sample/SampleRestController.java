@@ -1,14 +1,16 @@
 package com.kmalik.sample;
-
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -31,7 +33,17 @@ public class SampleRestController {
     System.out.println("Hello, name = " + name);
     return "Hello " + name;
   }
-
+  
+  @ResponseStatus(HttpStatus.OK)
+  @RequestMapping(value = "/ip", method = GET)
+  public String getPublicIP() {
+	  String ip=Utilities.executeCommand("curl checkip.amazonaws.com");
+   System.out.println("IP address is:"+ip);
+   if(ip!=null)
+    return ip;
+	return null;
+  }
+  
   @ResponseStatus(HttpStatus.OK)
   @RequestMapping(value = "/map", method = POST)
   public String writeMap(
@@ -76,7 +88,7 @@ public class SampleRestController {
     System.out.println("Exit");
     System.exit(1);
   }
-  
+ 
   @ResponseStatus(HttpStatus.OK)
   @RequestMapping(value = "/status", method = GET)
   public String getStatus() {
